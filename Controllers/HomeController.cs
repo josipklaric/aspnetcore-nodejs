@@ -13,31 +13,14 @@ namespace AspNetNodeDemo.Controllers
 {
     public class HomeController : Controller
     {
-        public async Task<IActionResult> GeneratePdf([FromServices] INodeServices nodeServices, [FromServices] IHostingEnvironment env)
+        private readonly UserContext _context;
+
+        public HomeController(UserContext context)
         {
-            var templatePath = env.WebRootFileProvider.GetFileInfo("template.html");
-
-            var html = System.IO.File.ReadAllText(templatePath.PhysicalPath);
-
-            html = html.Replace("%conference%", "DevArena 2017");
-            html = html.Replace("%name%", "Josip Klarić");
-            html = html.Replace("%date%", DateTime.Now.ToShortDateString());
-
-            var options = new {
-                Format = new {
-                    Width = "640px",
-                    Height = "450px",
-                    Margin = "0px"
-                },
-                Orientation = "portrait"
-            };
-
-            var data = new { html };
-
-            var result = await nodeServices.InvokeAsync<Stream>("./node_scripts/pdf.js", options, data);
-
-            return File(result, "application/pdf");
+            _context = context;
         }
+
+
 
         public IActionResult Index()
         {
