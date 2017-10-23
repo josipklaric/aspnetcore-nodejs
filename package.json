@@ -1,0 +1,11 @@
+{
+  "version": "1.0.0",
+  "name": "asp.net",
+  "private": true,
+  "devDependencies": {},
+  "dependencies": {
+    "html-pdf": "^2.2.0",
+    "json2xls": "^0.1.2",
+    "webshot": "^0.18.0"
+  }
+}
