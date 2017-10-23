@@ -74,6 +74,8 @@ namespace AspNetNodeDemo.Controllers
             return File(fileBytes, "application/octet-stream", "Users.xlsx");
         }
 
+        #region Unused code 
+
         // GET: Users/Details/5
         public IActionResult Details(int? id)
         {
@@ -196,5 +198,7 @@ namespace AspNetNodeDemo.Controllers
         {
             return _context.Users.Any(e => e.ID == id);
         }
+
+        #endregion
     }
 }
