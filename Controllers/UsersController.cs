@@ -9,6 +9,7 @@ using AspNetNodeDemo.Models;
 using Microsoft.AspNetCore.NodeServices;
 using Microsoft.AspNetCore.Hosting;
 using System.IO;
+using Newtonsoft.Json;
 
 namespace AspNetNodeDemo.Controllers
 {
@@ -60,6 +61,17 @@ namespace AspNetNodeDemo.Controllers
             var result = await nodeServices.InvokeAsync<Stream>("./node_scripts/pdf.js", options, data);
 
             return File(result, "application/pdf");
+        }
+
+        public async Task<IActionResult> ExportToExcel([FromServices] INodeServices nodeServices, [FromServices] IHostingEnvironment env)
+        {
+            var data = JsonConvert.SerializeObject(_context.Users);
+
+            var filePath = await nodeServices.InvokeAsync<string>("./node_scripts/excel.js", data);
+
+            byte[] fileBytes = System.IO.File.ReadAllBytes(filePath);
+
+            return File(fileBytes, "application/octet-stream", "Users.xlsx");
         }
 
         // GET: Users/Details/5
