@@ -19,9 +19,9 @@ namespace AspNetNodeDemo.Controllers
 
             var html = System.IO.File.ReadAllText(templatePath.PhysicalPath);
 
-            html = html.Replace("{#conference}", "DevArena 2017");
-            html = html.Replace("{#name}", "Josip Klarić");
-            html = html.Replace("{#date}", DateTime.Now.ToShortDateString());
+            html = html.Replace("%conference%", "DevArena 2017");
+            html = html.Replace("%name%", "Josip Klarić");
+            html = html.Replace("%date%", DateTime.Now.ToShortDateString());
 
             var options = new {
                 Format = new {
@@ -37,24 +37,6 @@ namespace AspNetNodeDemo.Controllers
             var result = await nodeServices.InvokeAsync<Stream>("./node_scripts/pdf.js", options, data);
 
             return File(result, "application/pdf");
-        }
-
-        private object GetHtmlTicket(IHostingEnvironment env)
-        {
-            var data = new { Conference = "DevArena 2017", Name = "Josip Klarić", Date = DateTime.Now.ToShortDateString() };
-
-            var reportPath = env.WebRootFileProvider.GetFileInfo("template.html");
-
-            if (reportPath == null)
-                return null;
-
-            var html = System.IO.File.ReadAllText(reportPath.PhysicalPath);
-
-            html = html.Replace("{#conference}", data.Conference);
-            html = html.Replace("{#name}", data.Name);
-            html = html.Replace("{#date}", data.Date);
-
-            return new { html };
         }
 
         public IActionResult Index()
