@@ -37,7 +37,24 @@ namespace AspNetNodeDemo.Controllers
                 UserAgent = "Mozilla/5.0 (iPhone; U; CPU iPhone OS 3_2 like Mac OS X; en-us) AppleWebKit/531.21.20 (KHTML, like Gecko) Mobile/7B298g"
             };
 
-            var result = await nodeServices.InvokeAsync<string>("./node_scripts/screenshot.js", url, mobile, options);
+            if(!mobile)
+            {
+                options = new
+                {
+                    ScreenSize = new
+                    {
+                        Width = 1360,
+                        Height = 768
+                    },
+                    ShotSize = new
+                    {
+                        Width = 1360,
+                        Height = "all"
+                    },
+                    UserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.113 Safari/537.36"
+                };
+            }
+            var result = await nodeServices.InvokeAsync<string>("./node_scripts/screenshot.js", url, options);
 
             return Json(new { ImagePath = result });
         }

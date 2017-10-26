@@ -2,18 +2,13 @@
 var fs = require('fs');
 var path = require('path');
 
-module.exports = (callback, site, mobile, options) => {
-
+module.exports = (callback, site, options) => {
+    console.log('> webshot called -> site: ' + site);
     var filePath = './wwwroot/images/screenshot.png';
 
-    if (mobile) {
-        webshot(site, filePath, options);
-    }
-    else {
-        webshot(site, filePath, function(err) {
-            
-        });
-    }
+    webshot(site, filePath, options, function (err) {
+        console.log('Error: ' + err);
+    });
     
     callback(null, filePath);
 }
